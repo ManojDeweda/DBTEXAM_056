@@ -1,0 +1,190 @@
+NAME - MANOJ DEWEDA
+
+SECTION -1
+
+ANSWER 1=>
+
+CREATING TABLE DEPT
+
+	Create table DEPT 
+	(
+	DEPTNO int(2),
+	DNAME varchar(15),
+	LOC varchar(10)
+	);
+	
+INSERTING GIVEN VALUES IN TABLE DEPT 
+	
+	Insert  into  DEPT  (DEPTNO, DNAME,LOC) VALUES
+	(10,'ACCOUNTING','NEWYORK'),
+	(20 ,'RESEARCH', 'DALLAS'),
+	(30, 'SALES' ,'CHICAGO'),
+	(40 ,'OPERATIONS' ,'BOSTON');
+	
+--------------------------------------------------------------------------------
+
+ANSWER 2=>
+		
+	CREATING TABLE EMP
+	
+	Create table EMP 
+	(
+	EMPNO int(4),
+	ENAME varchar(10),
+	JOB varchar(9),
+	HIREDATE date,
+	SAL float(7,2),
+	COMM float(7,2),
+	DEPTNO int(2)
+	);
+	
+	INSERTING GIVEN VALUES IN TABLE EMP TABLE
+	
+	Insert  into  EMP (EMPNO,ENAME,JOB,HIREDATE,SAL,COMM,DEPTNO) VALUES
+	(7839 ,'KING', 'MANAGER', '1991-11-17', 5000, NULL ,10),
+	(7698 ,'BLAKE', 'CLERK', '1981-05-01', 2850 ,NULL, 30),
+	(7782, 'CLARK', 'MANAGER', '1981-06-09', 2450 ,NULL, 10),
+	(7566, 'JONES' ,'CLERK', '1981-04-02', 2975, NULL ,20),
+	(7654,'MARTIN', 'SALESMAN', '1981-09-28', 1250, 1400, 30),
+	(7499 ,'ALLEN' ,'SALESMAN' ,'1981-02-20' ,1600 ,300 ,30);
+	
+	
+-------------------------------------------------------------------------------------------------
+ANSWER 3=>	
+
+	SELECT * FROM EMP WHERE SAL BETWEEN 2500 AND 5000;
+	
+		
+-------------------------------------------------------------------------------------------------
+ANSWER 4=>	
+			
+		SELECT ENAME FROM EMP ORDER BY ENAME DESC;	
+
+	
+-------------------------------------------------------------------------------------------------
+ANSWER 5=>
+
+			SELECT LOWER(JOB) AS "jobs" FROM EMP;
+	
+-------------------------------------------------------------------------------------------------
+ANSWER 6=>	
+
+			SELECT ENAME,LENGTH(ENAME) FROM EMP;
+
+	
+-------------------------------------------------------------------------------------------------
+ANSWER 7=>
+
+			SELECT DEPTNO,COUNT(DEPTNO) FROM EMP GROUP BY DEPTNO ORDER BY 1;
+
+
+	
+-------------------------------------------------------------------------------------------------
+ANSWER 8=>
+
+			SELECT DEPT.DNAME,EMP.ENAME FROM EMP,DEPT WHERE DEPT.DEPTNO=EMP.DEPTNO;
+
+	
+-------------------------------------------------------------------------------------------------
+ANSWER 9=>	
+			
+			SELECT INSTR(ENAME,'AR') FROM EMP;
+			
+	
+-------------------------------------------------------------------------------------------------
+ANSWER 10=>				
+
+           SELECT SAL*.20 AS "HRA" FROM EMP; 
+		 
+
+================================================================================================================
+================================================================================================================
+
+SECTION II
+
+ANSWER 1 
+CREATING A TEMPP TABLE FOR OUTPUT=>
+
+CREATE TABLE TEMPP
+(
+STRI VARCHAR(5),
+STR2 VARCHAR(5),
+SEC VARCHAR (50)
+);
+
+
+DELIMITER //
+CREATE PROCEDURE PROC1(string1 VARCHAR(5), string2 VARCHAR(5))
+BEGIN 
+		DECLARE str1 varchar(5);
+        DECLARE str2 VARCHAR(5);
+        DECLARE i int default 0 ;
+        SET str1=string1;
+        SET str2= string2;
+   
+   while i < LENGTH(str2) do 
+       if  SUBSTR(str2,-i)=str1 THEN 
+          insert into TEMPP values( str1,str2, 'string 1 exists inside string2');
+         
+       end if;
+     set i=i+1;
+      
+   end while ;
+END ;//
+DELIMITER ;
+
+CALLING PROCEDURE FOR PROC1==>
+...........................
+DELIMITER //
+DROP PROCEDURE PROC1;
+CREATE PROCEDURE CALLPROCEDURE()
+BEGIN
+    CALL PROC1('DAC','CDAC');
+
+END ; //
+DELIMITER ;
+
+
+ 
+CALL CALLPROCEDURE();
+ 
+SELECT * FROM TEMPP;		 
+		  
+-----------------------------------------------------------------------------------------------		  
+SECTION II
+ANSWER 2
+
+
+
+DELIMITER //	
+CREATE FUNCTION FUNC1( a float,b float,c float)
+RETURNS BOOLEAN
+deterministic 
+
+BEGIN
+		IF(	a<(b+c)) and (b<(c+a)) and (c<(a+b)) then
+        return TRUE;
+        ELSE
+        return FALSE;
+        END IF;
+END;//
+DELIMITER ;
+-------------------------------
+
+CALLING PROCEDURE FOR  FUNC1()==>
+...............................
+DELIMITER //
+CREATE PROCEDURE CALLfunc1()
+BEGIN
+    if  FUNC1(7,8,9) THEN 
+      insert into TEMPP values( 'YES','VALID', 'SIDES OF TRIANGLE');
+      ELSE 
+      insert into TEMPP values( 'NO','INVALID', 'SIDES OF TRIANGLE');
+     END IF ;
+END ; //
+DELIMITER ;
+ 
+CALL CALLfunc1();
+
+
+ SELECT * FROM TEMPP;   
